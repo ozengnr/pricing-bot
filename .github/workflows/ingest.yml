@@ -2,29 +2,31 @@ name: Nightly Ingest
 
 on:
   schedule:
-    - cron: '0 11 * * *'      # 11:00 UTC = 7 AM Boston
-  workflow_dispatch:          # allow manual runs
+    - cron: '0 11 * * *'
+  workflow_dispatch:
 
 jobs:
   ingest:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout repo
+      uses: actions/checkout@v4
 
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
-        cache: pip
 
-    - name: Install deps
+    - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install --no-cache-dir -r requirements.txt
+        python -m pip show pandas
 
     - name: Run ingest
-      # remove this env block until you add a real secret
-      # env:
-      #   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-      run: python src/ingest.py
+      run: |
+        python --version
+        which python
+        ls -R
+        python src/ingest.py
