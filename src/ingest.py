@@ -1,4 +1,8 @@
 # src/ingest.py
+
+import os
+os.chdir(os.path.dirname(os.path.abspath(__file__)) + "/..")
+
 import pandas as pd
 from pathlib import Path
 import json, datetime, os, textwrap, requests
